@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Blank generator</title>
+  </head>
+  <body>
+    <div style="width: 100%">
+      <form style="padding: 8px" id="input-form">
+        <label style="display: block" for="no-of-blanks">Number of blanks</label>
+        <input type="number" id="no-of-blanks" min="1" />
+        <label style="display: block" for="input-text">Input text</label>
+        <textarea style="display: block; width: 500px; max-width: 100%" rows="10" id="input-text">
+Place your text here</textarea
+        >
+        <button onClick="onSubmit()">Submit</button>
+      </form>
+      <div style="padding: 8px">
+        <label style="display: block" for="output-text">Output text</label>
+        <textarea style="display: block; width: 500px; max-width: 100%" rows="10" id="output-text"></textarea>
+      </div>
+    </div>
+    <script>
+      // prevent default form submission behaviour
+      document.getElementById('input-form').addEventListener('click', function (event) {
+        event.preventDefault();
+      });
+
+      // form submit handler
+      function onSubmit() {
+        const input = document.getElementById('input-text').value;
+        const blanks = document.getElementById('no-of-blanks').value;
+
+        if (input) {
+          const words = input.split(' ');
+          let noOfBlanks = blanks && blanks > 0 ? blanks : 1;
+          if (noOfBlanks > words.length) noOfBlanks = words.length;
+
+          const randomIndices = [];
+          while (randomIndices.length < noOfBlanks) {
+            let r = Math.floor(Math.random() * words.length);
+            if (randomIndices.indexOf(r) === -1) randomIndices.push(r);
+          }
+
+          randomIndices.forEach((index) => {
+            words[index] = words[index].replace(/./g, '_');
+          });
+
+          document.getElementById('output-text').innerHTML = words.join(' ');
+        }
+      }
+    </script>
+  </body>
+</html>
